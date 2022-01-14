@@ -1,6 +1,8 @@
 package com.tui.proof.service;
 
 import com.tui.proof.bean.CreateOrderRequest;
+import com.tui.proof.bean.OrderBean;
+import com.tui.proof.bean.SearchOrdersRequest;
 import com.tui.proof.bean.UpdateOrderRequest;
 import com.tui.proof.exception.ClientNotFoundException;
 import com.tui.proof.exception.OrderNotFoundException;
@@ -15,10 +17,12 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Example;
+import org.springframework.data.domain.ExampleMatcher;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -71,7 +75,28 @@ public class PilotesOrderServiceImpl implements PilotesOrderService{
         throw new OrderNotFoundException(request.getOrderId().toString());
     }
 
-    private Order updateOrder(Order order, UpdateOrderRequest req) {
+    @Override
+    public List<OrderBean> searchOrders(String username, String firstName, String lastName, String telephone, String eMail) {
+        Client client = new Client()
+                .setUsername(username)
+                .setFirstName(firstName)
+                .setLastName(lastName)
+                .setEMail(eMail)
+                .setTelephone(telephone);
+
+        ExampleMatcher exampleMatcher = ExampleMatcher.matching()
+                .withMatcher("username", ExampleMatcher.GenericPropertyMatchers.contains().ignoreCase())
+                .withMatcher("firstName", ExampleMatcher.GenericPropertyMatchers.contains().ignoreCase())
+                .withMatcher("lastName", ExampleMatcher.GenericPropertyMatchers.contains().ignoreCase())
+                .withMatcher("telephone", ExampleMatcher.GenericPropertyMatchers.contains().ignoreCase())
+                .withMatcher("eMail", ExampleMatcher.GenericPropertyMatchers.contains().ignoreCase());
+
+        List<Client> all = clientRepository.findAll(Example.of(client, exampleMatcher));
+        all.isEmpty();
+        return null;
+    }
+
+     private Order updateOrder(Order order, UpdateOrderRequest req) {
         if (req.getQuantity() != null){
             order.setQuantity(req.getQuantity());
             order.setOrderTotal(calcOrderTotal(req.getQuantity()));

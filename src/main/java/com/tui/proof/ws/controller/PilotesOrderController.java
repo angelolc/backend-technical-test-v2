@@ -1,8 +1,6 @@
 package com.tui.proof.ws.controller;
 
-import com.tui.proof.bean.CreateOrderRequest;
-import com.tui.proof.bean.CreateOrderResponse;
-import com.tui.proof.bean.UpdateOrderRequest;
+import com.tui.proof.bean.*;
 import com.tui.proof.exception.ClientNotFoundException;
 import com.tui.proof.exception.OrderNotFoundException;
 import com.tui.proof.exception.OrderTimeOutException;
@@ -13,6 +11,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/rest/pilotes")
@@ -49,5 +49,20 @@ public class PilotesOrderController {
             return ResponseEntity.badRequest().build();
         }
         return ResponseEntity.ok(new CreateOrderResponse().setOrderId(orderId));
+    }
+
+    @GetMapping("/orders")
+    public ResponseEntity<?> searchOrders(@RequestParam(required = false) String username,
+                                          @RequestParam(required = false) String firstName,
+                                          @RequestParam(required = false) String lastName,
+                                          @RequestParam(required = false) String telephone,
+                                          @RequestParam(required = false) String eMail){
+        List<OrderBean> orders = null;
+        try{
+            orders = pilotesOrderService.searchOrders(username, firstName, lastName, telephone, eMail);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().build();
+        }
+        return ResponseEntity.ok(new SearchOrdersResponse().setOrders(orders));
     }
 }
