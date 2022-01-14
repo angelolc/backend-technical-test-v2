@@ -19,7 +19,7 @@ public class Order {
   @OneToOne
   @JoinColumn(name="address_id", nullable=false)
   private Address deliveryAddress;
-  private int pilotes;
+  private int quantity;
   private double orderTotal;
   private LocalDateTime creationDate;
 
