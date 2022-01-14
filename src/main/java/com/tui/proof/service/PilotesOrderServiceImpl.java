@@ -18,6 +18,7 @@ import org.springframework.data.domain.Example;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.Optional;
 
 @Service
@@ -59,7 +60,7 @@ public class PilotesOrderServiceImpl implements PilotesOrderService{
     @Override
     public Integer updateOrder(UpdateOrderRequest request) throws OrderNotFoundException, OrderTimeOutException {
 
-        Optional<Order> one = orderRepository.findOne(Example.of(new Order().setId(request.getOrderId())));
+        Optional<Order> one = orderRepository.findById(request.getOrderId());
         if(one.isPresent()){
             Order order = one.get();
             if (isUpdateInTime(order.getCreationDate())){
@@ -92,7 +93,7 @@ public class PilotesOrderServiceImpl implements PilotesOrderService{
     }
 
     private boolean isUpdateInTime(LocalDateTime creationDate) {
-        return false;
+        return creationDate.until(LocalDateTime.now(), ChronoUnit.MINUTES) <= maxAllowedMinsUpdate;
     }
 
     //round up to 3 decimal places
