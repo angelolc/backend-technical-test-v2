@@ -16,6 +16,8 @@ import com.tui.proof.repository.OrderRepository;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.convert.ConversionService;
+import org.springframework.core.convert.TypeDescriptor;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.ExampleMatcher;
 import org.springframework.stereotype.Service;
@@ -24,6 +26,7 @@ import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class PilotesOrderServiceImpl implements PilotesOrderService{
@@ -34,6 +37,8 @@ public class PilotesOrderServiceImpl implements PilotesOrderService{
     private OrderRepository orderRepository;
     @Autowired
     private AddressRepository addressRepository;
+    @Autowired
+    private ConversionService conversionService;
 
     @Value("${pilotes.unit.price}")
     private double pilotesUnitPrice;
@@ -91,9 +96,12 @@ public class PilotesOrderServiceImpl implements PilotesOrderService{
                 .withMatcher("telephone", ExampleMatcher.GenericPropertyMatchers.contains().ignoreCase())
                 .withMatcher("eMail", ExampleMatcher.GenericPropertyMatchers.contains().ignoreCase());
 
-        List<Client> all = clientRepository.findAll(Example.of(client, exampleMatcher));
-        all.isEmpty();
-        return null;
+        List<Client> clients = clientRepository.findAll(Example.of(client, exampleMatcher));
+        List<Order> orders = clients.stream().flatMap(c -> c.getOrders().stream()).collect(Collectors.toList());
+
+        TypeDescriptor orderType = TypeDescriptor.collection(List.class, TypeDescriptor.valueOf(Order.class));
+        TypeDescriptor orderBeanType = TypeDescriptor.collection(List.class, TypeDescriptor.valueOf(OrderBean.class));
+        return (List<OrderBean>) conversionService.convert(orders, orderType, orderBeanType);
     }
 
      private Order updateOrder(Order order, UpdateOrderRequest req) {
