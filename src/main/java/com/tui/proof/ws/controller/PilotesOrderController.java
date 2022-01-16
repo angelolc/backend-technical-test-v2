@@ -5,6 +5,7 @@ import com.tui.proof.exception.ClientNotFoundException;
 import com.tui.proof.exception.OrderNotFoundException;
 import com.tui.proof.exception.OrderTimeOutException;
 import com.tui.proof.service.PilotesOrderService;
+import com.tui.proof.service.PilotesValidationService;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,9 +23,16 @@ public class PilotesOrderController {
 
     @Autowired
     private PilotesOrderService pilotesOrderService;
+    @Autowired
+    private PilotesValidationService validationService;
 
     @PostMapping("/order")
     public ResponseEntity<?> createOrder(@RequestBody CreateOrderRequest request) {
+        List<String> msgs = validationService.validateCreateOrderReq(request);
+        if(!msgs.isEmpty()){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(msgs);
+        }
+
         Integer orderId = null;
         try {
             orderId = pilotesOrderService.createOrder(request);
@@ -38,6 +46,10 @@ public class PilotesOrderController {
 
     @PatchMapping("/order")
     public ResponseEntity<?> updateOrder(@RequestBody UpdateOrderRequest request){
+        List<String> msgs = validationService.validateUpdateOrderReq(request);
+        if(!msgs.isEmpty()){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(msgs);
+        }
         Integer orderId = null;
         try {
             orderId = pilotesOrderService.updateOrder(request);
