@@ -4,14 +4,9 @@ import com.tui.proof.bean.AddressBean;
 import com.tui.proof.bean.OrderBean;
 import com.tui.proof.model.Address;
 import com.tui.proof.model.Order;
-import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.convert.ConversionService;
 import org.springframework.core.convert.converter.Converter;
-import org.springframework.stereotype.Component;
 
 @Data
 @Accessors(chain = true)

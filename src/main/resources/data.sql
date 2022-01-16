@@ -1,7 +1,9 @@
 --BUILT IN DATA
 
-INSERT INTO CLIENT (id, username, first_name, last_name, telephone, e_mail) VALUES (1, 'user1', 'bob', 'johns', '+39329123456', 'bobjohns@tui.com');
-INSERT INTO CLIENT (id, username, first_name, last_name, telephone, e_mail) VALUES (2, 'user2', 'tom', 'dan', '+39329654321', 'tomdan@tui.com');
+INSERT INTO USER (id, username, password, active, roles) values (1, 'admin', '$2a$12$s204e6CnnBlQQGD8p4tMH.BIMWaXHoBOoEXTbrkCFvtHoGl1wI7lq', true, 'ADMIN');
+
+INSERT INTO CLIENT (id, username, first_name, last_name, telephone, e_mail) VALUES (1, 'client1', 'bob', 'johns', '+39329123456', 'bobjohns@tui.com');
+INSERT INTO CLIENT (id, username, first_name, last_name, telephone, e_mail) VALUES (2, 'client2', 'tom', 'dan', '+39329654321', 'tomdan@tui.com');
 
 insert into ADDRESS (id, street, postcode, city, country) values (1, 'viale monza 1', '20120', 'milano', 'italy');
 insert into ADDRESS (id, street, postcode, city, country) values (2, 'corso cavour 20', '70100', 'bari', 'italy');
