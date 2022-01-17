@@ -13,6 +13,7 @@ import com.tui.proof.model.Order;
 import com.tui.proof.repository.AddressRepository;
 import com.tui.proof.repository.ClientRepository;
 import com.tui.proof.repository.OrderRepository;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -29,6 +30,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
+@Slf4j
 public class PilotesOrderServiceImpl implements PilotesOrderService{
 
     @Autowired
@@ -50,34 +52,40 @@ public class PilotesOrderServiceImpl implements PilotesOrderService{
     public Integer createOrder(CreateOrderRequest req) throws ClientNotFoundException {
         Optional<Client> one = clientRepository.findOne(Example.of(new Client().setUsername(req.getClientUsername())));
         if(one.isPresent()){
+            Client client = one.get();
+            log.info("found client {}", client.getId());
             Address address = addressRepository.save(new Address()
                     .setStreet(req.getStreet())
                     .setCity(req.getCity())
                     .setCountry(req.getCountry())
                     .setPostcode(req.getPostcode()));
             Order order = new Order()
-                    .setClient(one.get())
+                    .setClient(client)
                     .setQuantity(req.getQuantity())
                     .setCreationDate(LocalDateTime.now())
                     .setDeliveryAddress(address)
                     .setOrderTotal(calcOrderTotal(req.getQuantity()));
             return orderRepository.save(order).getId();
         }
+        log.error("No client found for username {} ", req.getClientUsername());
         throw new ClientNotFoundException(req.getClientUsername());
     }
 
     @Override
     public Integer updateOrder(UpdateOrderRequest request) throws OrderNotFoundException, OrderTimeOutException {
-
         Optional<Order> one = orderRepository.findById(request.getOrderId());
         if(one.isPresent()){
             Order order = one.get();
+            log.info("found order {}", order.getId());
             if (isUpdateInTime(order.getCreationDate())){
                 return orderRepository.save(updateOrder(order, request)).getId();
             }
+            log.error("timeout for modifying order {} ", order.getId());
             throw new OrderTimeOutException();
         }
-        throw new OrderNotFoundException(request.getOrderId().toString());
+        String orderId = request.getOrderId().toString();
+        log.error("No order found for id {} ", orderId);
+        throw new OrderNotFoundException(orderId);
     }
 
     @Override
@@ -99,6 +107,7 @@ public class PilotesOrderServiceImpl implements PilotesOrderService{
         List<Client> clients = clientRepository.findAll(Example.of(client, exampleMatcher));
         List<Order> orders = clients.stream().flatMap(c -> c.getOrders().stream()).collect(Collectors.toList());
 
+        log.info("orders found: {}", orders.stream().map(order -> order.getId().toString()).collect(Collectors.joining(", ")));
         TypeDescriptor orderType = TypeDescriptor.collection(List.class, TypeDescriptor.valueOf(Order.class));
         TypeDescriptor orderBeanType = TypeDescriptor.collection(List.class, TypeDescriptor.valueOf(OrderBean.class));
         return (List<OrderBean>) conversionService.convert(orders, orderType, orderBeanType);

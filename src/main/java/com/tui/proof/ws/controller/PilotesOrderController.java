@@ -32,7 +32,6 @@ public class PilotesOrderController {
         if(!msgs.isEmpty()){
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(msgs);
         }
-
         Integer orderId = null;
         try {
             orderId = pilotesOrderService.createOrder(request);
