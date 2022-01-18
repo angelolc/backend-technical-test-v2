@@ -2,7 +2,6 @@ package com.tui.proof.service;
 
 import com.tui.proof.bean.CreateOrderRequest;
 import com.tui.proof.bean.OrderBean;
-import com.tui.proof.bean.SearchOrdersRequest;
 import com.tui.proof.bean.UpdateOrderRequest;
 import com.tui.proof.exception.ClientNotFoundException;
 import com.tui.proof.exception.OrderNotFoundException;
@@ -13,6 +12,8 @@ import com.tui.proof.model.Order;
 import com.tui.proof.repository.AddressRepository;
 import com.tui.proof.repository.ClientRepository;
 import com.tui.proof.repository.OrderRepository;
+import lombok.Data;
+import lombok.experimental.Accessors;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,7 +32,9 @@ import java.util.stream.Collectors;
 
 @Service
 @Slf4j
-public class PilotesOrderServiceImpl implements PilotesOrderService{
+@Data
+@Accessors(chain = true)
+public class PilotesOrderServiceImpl implements PilotesOrderService {
 
     @Autowired
     private ClientRepository clientRepository;

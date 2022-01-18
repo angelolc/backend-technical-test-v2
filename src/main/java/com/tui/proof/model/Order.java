@@ -19,8 +19,8 @@ public class Order {
   @OneToOne
   @JoinColumn(name="address_id", nullable=false)
   private Address deliveryAddress;
-  private int quantity;
-  private double orderTotal;
+  private Integer quantity;
+  private Double orderTotal;
   private LocalDateTime creationDate;
 
   @ManyToOne
