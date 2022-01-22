@@ -27,17 +27,18 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         http
                 .csrf().disable()
                 .authorizeRequests()
-                .antMatchers("/api/rest/pilotes/order").permitAll()
+                .antMatchers("/api/v1/pilotes/order").permitAll()
                 .antMatchers("/h2-console/**").permitAll()
                 .antMatchers( "/v2/api-docs",
                         "/swagger-resources",
                         "/swagger-resources/**",
                         "/configuration/ui",
                         "/configuration/security",
-                        "/swagger-ui.html",
+                        "/swagger-ui-pilotes.html",
                         "/webjars/**",
                         "/v3/api-docs/**",
-                        "/swagger-ui/**").permitAll()
+                        "/swagger-ui/**"
+                ).permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .httpBasic()
