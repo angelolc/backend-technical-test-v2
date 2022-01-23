@@ -20,6 +20,12 @@ MVC style architecture with the following layers:
 - Service: is responsible for the business logic;
 - Repository: communicate with the db
 
+## Database
+
+Database is accessible with the following configs:
+- url: http://localhost:8080/h2-console
+- username: sa
+
 ## Documentation
 All the endpoints are documented with swagger at the following url:
 - http://localhost:8080/swagger-ui-pilotes.html
