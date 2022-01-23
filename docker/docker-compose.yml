@@ -1,0 +1,7 @@
+version: '3.6'
+services:
+  backend-technical-test:
+    container_name: backend-technical-test
+    image: backend-technical-test:latest
+    ports:
+      - 8080:8080
