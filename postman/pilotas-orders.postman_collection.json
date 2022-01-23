@@ -1,0 +1,197 @@
+{
+	"info": {
+		"_postman_id": "24a1c4c1-559f-48d0-9b88-db783e01f8d8",
+		"name": "pilotas-orders",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "createOrder",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"clientUsername\": \"client1\",\r\n    \"quantity\": 5,\r\n    \"street\": \"via antani 16\",\r\n    \"postcode\": \"20100\",\r\n    \"city\": \"milano\",\r\n    \"country\": \"italy\"\r\n    \r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://{{localhost}}:8080/api/v1/pilotes/order",
+					"protocol": "http",
+					"host": [
+						"{{localhost}}"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"pilotes",
+						"order"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "searchOrders",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "password",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "admin",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"clientUsername\": \"client1\",\r\n    \"quantity\": 5,\r\n    \"street\": \"via antani 16\",\r\n    \"postcode\": \"20100\",\r\n    \"city\": \"milano\",\r\n    \"country\": \"italy\"\r\n    \r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://{{localhost}}:8080/api/v1/pilotes/orders?username=&firstName=bob&eMail=&telephone=",
+					"protocol": "http",
+					"host": [
+						"{{localhost}}"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"pilotes",
+						"orders"
+					],
+					"query": [
+						{
+							"key": "username",
+							"value": ""
+						},
+						{
+							"key": "firstName",
+							"value": "bob"
+						},
+						{
+							"key": "lastName",
+							"value": null,
+							"disabled": true
+						},
+						{
+							"key": "eMail",
+							"value": ""
+						},
+						{
+							"key": "telephone",
+							"value": ""
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "createOrder-KO",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"clientUsername\": \"client1\",\r\n    \"quantity\": 7,\r\n    \"street\": \"via antani 16\",\r\n    \"postcode\": \"20100\",\r\n    \"city\": \"milano\",\r\n    \"country\": \"italy\"\r\n    \r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://{{localhost}}:8080/api/v1/pilotes/order",
+					"protocol": "http",
+					"host": [
+						"{{localhost}}"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"pilotes",
+						"order"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "updateOrder",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "PATCH",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"orderId\": 4,\r\n    \"quantity\": 10,\r\n    \"street\": \"via suzzani 22\",\r\n    \"postcode\": \"20100\",\r\n    \"city\": \"bari\",\r\n    \"country\": \"italy\"\r\n    \r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://{{localhost}}:8080/api/v1/pilotes/order",
+					"protocol": "http",
+					"host": [
+						"{{localhost}}"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"pilotes",
+						"order"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "api-docs",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://{{localhost}}:8080/v3/api-docs",
+					"protocol": "http",
+					"host": [
+						"{{localhost}}"
+					],
+					"port": "8080",
+					"path": [
+						"v3",
+						"api-docs"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

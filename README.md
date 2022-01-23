@@ -7,7 +7,7 @@ This is a Spring Boot Java Application with an embedded h2 db that exposes the f
 - **GET /api/v1/pilotes/orders**: Searches all the orders related to the clients whose data matches the given parameters. E.g.: All orders of clients whose name contains an 'a'. This is a secured operation so authentication is required first.
 
 ## Security 
-In order to use the search orders operation authenticate with the following user:
+In order to use the search orders operation authenticate via basic authentication with the following user:
 - username: admin
 - password: password
 
@@ -19,6 +19,23 @@ MVC style architecture with the following layers:
 - Controller: exposes the endpoints and handles request/response;
 - Service: is responsible for the business logic;
 - Repository: communicate with the db
+
+## Documentation
+All the endpoints are documented with swagger at the following url:
+- http://localhost:8080/swagger-ui-pilotes.html
+
+The endpoints and api-docs can be used also with postman importing the JSON inside the folder:
+- /postman
+
+## Tecnologies
+Java 11, Spring boot, Maven, h2, JPA, Spring Security, Lombok, Springdoc, Easymock
+
+## Build
+mvn clean install
+
+## Run 
+java -jar backend-technical-test-<VERSION>.jar
+
  
 
 
